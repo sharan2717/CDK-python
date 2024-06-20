@@ -1,11 +1,11 @@
 import json
-from multiprocessing import process
 import urllib.parse
 import boto3
 
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
-   
+import os
+
 def calculateMarks(marks_csv):
 
     rows = marks_csv.splitlines()[1:]
@@ -71,7 +71,7 @@ def calculate_gpa(marks):
 
 def addStudentGrades(grades):
    try:
-     table = dynamodb.Table(process.env.TABLE_NAME)
+     table = dynamodb.Table(os.environ.get("TABLE_NAME"))
      with table.batch_writer() as batch:
         for item in grades:
               batch.put_item(Item=item)  
