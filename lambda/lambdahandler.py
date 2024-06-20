@@ -15,19 +15,20 @@ def calculateMarks(marks_csv):
 
     processed_data = []
     for row in filtered_rows:
-      
-        marks: dict[str, float] = dict(zip(["Name", "Tamil", "English", "Maths", "Science", "Social"],
-                                       map(lambda x: float(x.strip()), row.split(","))))
+        columns = row.split(",")
+        name = columns[0].strip()
+        marks = dict(zip(["Tamil", "English", "Maths", "Science", "Social"], 
+                     map(lambda x: float(x.strip()), columns[1:])))
         gpa = calculate_gpa(marks)
 
         processed_data.append({
-            "Name": marks["Name"],
+            "Name":name ,
             "Tamil": calculate_grade(marks["Tamil"]),
             "English": calculate_grade(marks["English"]),
             "Maths": calculate_grade(marks["Maths"]),
             "Science": calculate_grade(marks["Science"]),
             "Social": calculate_grade(marks["Social"]),
-            "GPA": gpa.toFixed(2),
+            "GPA": round(gpa, 2),
         })
 
     return processed_data
