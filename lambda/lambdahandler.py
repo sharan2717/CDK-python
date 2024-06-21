@@ -1,10 +1,11 @@
 import json
 import urllib.parse
 import boto3
+import decimal
+import os
 
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
-import os
 
 def calculateMarks(marks_csv):
 
@@ -28,9 +29,11 @@ def calculateMarks(marks_csv):
             "Maths": calculate_grade(marks["Maths"]),
             "Science": calculate_grade(marks["Science"]),
             "Social": calculate_grade(marks["Social"]),
-            "GPA": round(gpa, 2),
-        })
+            "GPA": decimal.Decimal(f"{gpa:.2f}")
+  ,
 
+        })
+    print("process", processed_data)
     return processed_data
 
 def calculate_gpa(marks):
