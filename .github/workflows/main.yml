@@ -20,6 +20,8 @@ jobs :
             ${{ runner.os }}-pip-
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name : Instal AWS CDK
+        run : pip install aws-cdk.core
 
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
