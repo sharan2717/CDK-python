@@ -11,7 +11,6 @@ def calculateMarks(marks_csv):
 
     rows = marks_csv.splitlines()[1:]
 
-    # Filter out empty first elements (assuming headers are on the first line)
     filtered_rows = [row for row in rows if row.strip()]
 
     processed_data = []
