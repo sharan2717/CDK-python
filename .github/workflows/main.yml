@@ -1,0 +1,37 @@
+name : CDK-Python-demo-workflow
+
+on : [push]
+jobs : 
+ build :
+   runs-on : windows-latest
+   steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'   
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install CDK
+        run: pip install aws-cdk
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           aws-region: ap-south-1          
+            
+      - name: Synth CDK app
+        run: cdk synth
+      - name: Deploy CDK app (update with your desired command)
+        run: cdk deploy
